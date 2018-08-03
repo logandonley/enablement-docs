@@ -226,7 +226,7 @@ ansible-playbook apply.yml -e target=tools \
 
 ### Part 3 - GitLab
 
-If you are running this enablement on your own, you will want to look in the appendix for info on setting up your own [GitLab instance](../appendix/README.md).
+If you are running this enablement on your own, you will want to look in the appendix for info on setting up your own [GitLab instance](appendix/README.md).
 
 4. Navigate to GitLab (if you are in an instructor-led enablement, you will be provided the URL). You can login using your cluster credentials using the LDAP tab
 ![gitlab-ui](../images/exercise1/gitlab-ui.png)
