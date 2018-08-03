@@ -1,7 +1,7 @@
 # Red Hat Open Innovation Labs Enablement Materials
 This repo will house all the slides and lab exercises for the Enablement. It will also be used to track issues, features and new additions to the Enablement.
 
-[Course Content](https://rht-labs.github.io/enablement-docs/#/)
+[Course Content](https://logandonley.github.io/enablement-docs/#/)
 
 ## Slides
 Slides are currently only available on Red Hat's Google Drive (https://drive.google.com/open?id=1Rk0XAn2WjY-cVAhGbCNiL6EdiiS-hxbK). We are working on a solution to make this content more openly available.
