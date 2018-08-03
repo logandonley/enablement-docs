@@ -144,13 +144,13 @@ NAMESPACE_DISPLAY_NAME=<YOUR-NAME> Test
 ```yaml
     - name: "{{ dev_namespace }}"
       template: "{{ playbook_dir }}/templates/project-requests.yml"
-      template_action: create
+      action: create
       params: "{{ playbook_dir }}/params/project-requests-dev"
       tags:
       - projects
     - name: "{{ test_namespace }}"
       template: "{{ playbook_dir }}/templates/project-requests.yml"
-      template_action: create
+      action: create
       params: "{{ playbook_dir }}/params/project-requests-test"
       tags:
       - projects
@@ -383,6 +383,7 @@ JENKINS_OPTS=--sessionTimeout=720
       namespace: "{{ ci_cd_namespace }}"
       template: "{{ playbook_dir }}/templates/jenkins.yml"
       params: "{{ playbook_dir }}/params/jenkins"
+      params_from_vars: "{{ git_credentials }}"
       tags:
       - jenkins
 ```
@@ -419,15 +420,7 @@ greenballs:1.15
 ![green-balls.png](../images/exercise1/green-balls.png)
 Why does Jenkins have Blue Balls? More can be found [on reddit](https://www.reddit.com/r/programming/comments/4lu6q8/why_does_jenkins_have_blue_balls/) or the [jenkins blog](https://jenkins.io/blog/2012/03/13/why-does-jenkins-have-blue-balls/)
 
-5. Before building and deploying the Jenkins s2i; add git credentials to it. These will be used by Jenkins to access the Git Repositories where our apps will be stored. We want Jenkins to be able to push tags to it so write access is required. There are a few ways we can do this; either adding them to the `template/jenkins.yml` as environment Variables and then including them in the `params/jenkins` file.  We could also create a token in GitLab and use it as the source secret in the Jenkins template.
-But for simplicity just replace the `<USERNAME>` && `<PASSWORD>` in the `jenkins-s2i/configuration/init.groovy` with your LDAP credentials as seen below. This init file gets run when Jenkins launches and will setup the credentials for use in our Jobs in the next exercises
-```groovy
-gitUsername = System.getenv("GIT_USERNAME") ?: "<USERNAME>"
-gitPassword = System.getenv("GIT_PASSWORD") ?: "<PASSWORD>"
-```
-<p class="tip">
-Note in a residency we would not use your GitCredentials for pushing and pulling from Git, a service user would be created for this.
-</p>
+5. Before building and deploying the Jenkins s2i; the proper git credentials are needed to be populated. For simplicity, in this enablement session we will use your username and password (make sure your password isn't a "super secret", but still a strong one). Below we will show how these get passed on the command line at run time.
 
 5. Checkout the params and the templates for the `jenkins-s2i`
 ```bash
@@ -440,18 +433,11 @@ SOURCE_REPOSITORY_URL=<GIT_URL>
 NAME=jenkins
 SOURCE_REPOSITORY_CONTEXT_DIR=jenkins-s2i
 IMAGE_STREAM_NAMESPACE=<YOUR_NAME>-ci-cd
-SOURCE_REPOSITORY_USERNAME=<YOUR_LDAP_USERNAME>
-SOURCE_REPOSITORY_PASSWORD=<YOUR_LDAP_PASSWORD>
 ```
 where
     * `<GIT_URL>` is the full path clone path of the repo where this project is stored (including the https && .git)
     * `<YOUR_NAME>` is the prefix for your `-ci-cd` project.
     * Explore some of the other parameters in `templates/jenkins-s2i.yml`
-    * `<YOUR_LDAP_USERNAME>` is the username builder pod will use to login and clone the repo with
-    * `<YOUR_LDAP_PASSWORD>` is the password the builder pod will use to authenticate and clone the repo using
-<p class="tip">
-Note in a residency we would not use your GitCredentials for pushing and pulling from Git, A service user would be created or a token generated.
-</p>
 
 5. Create a new object `ci-cd-builds` in the Ansible `inventory/host_vars/ci-cd-tooling.yml` to drive the s2i build configuration.
 ```yaml
@@ -461,6 +447,7 @@ Note in a residency we would not use your GitCredentials for pushing and pulling
       namespace: "{{ ci_cd_namespace }}"
       template: "{{ playbook_dir }}/templates/jenkins-s2i.yml"
       params: "{{ playbook_dir }}/params/jenkins-s2i"
+      params_from_vars: "{{ git_credentials }}"
       tags:
       - jenkins
 ```
@@ -488,12 +475,16 @@ oc label is jenkins-slave-npm role=jenkins-slave
 ```
 This is pulling the container image into your namespace and then adding a label which will allow Jenkins to take notice of it. Don't worry if the label is already there and this last command fails!
 
-5. Now your code is commited, and you have bought in the Jenkins slave; run the OpenShift Applier to add the config to the cluster
+5. Now your code is commited, and you have brought in the Jenkins slave; run the OpenShift Applier to add the config to the cluster
 ```bash
 ansible-playbook apply.yml -e target=tools \
      -i inventory/ \
-     -e "filter_tags=jenkins"
+     -e "filter_tags=jenkins" \
+     -e '{"git_credentials": { "GIT_USERNAME": "<YOUR_GIT_USERNAME>", "GIT_PASSWORD": "<YOUR_GIT_PASSWORD>"}}'
 ```
+<p class="tip">
+Make sure to replace the <YOUR_GIT_USERNAME> and <YOUR_GIT_PASSWORD> above with valid values - ensuring that the '<' and '>' are replaced too! 
+</p>
 
 5. This will trigger a build of the s2i and when it's complete it will add an imagestream of `<YOUR_NAME>-ci-cd/jenkins:latest` to the project. The Deployment config should kick in and deploy the image once it arrives. You can follow the build of the s2i by going to the OpenShift console's project
 ![jenkins-s2i-log](../images/exercise1/jenkins-s2i-log.png)
