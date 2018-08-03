@@ -141,20 +141,19 @@ NAMESPACE_DISPLAY_NAME=<YOUR-NAME> Test
 
 3. In the `inventory/host_vars/projects-and-policies.yml` file; add the new objects for the projects you want to create (dev & test) by adding another object to the content array for each. You can copy and paste them from the `ci-cd` example and update them accordingly. If you do this; remember to change the params file! e.g.
 ```yaml
-    - name: "{{ dev_namespace }}"
-      template: "{{ playbook_dir }}/templates/project-requests.yml"
-      action: create
-      params: "{{ playbook_dir }}/params/project-requests-dev"
-      tags:
-      - projects
-    - name: "{{ test_namespace }}"
-      template: "{{ playbook_dir }}/templates/project-requests.yml"
-      action: create
-      params: "{{ playbook_dir }}/params/project-requests-test"
-      tags:
-      - projects
+     - name: "{{ dev_namespace }}"
+       template: "{{ playbook_dir }}/templates/project-requests.yml"
+       action: create
+       params: "{{ playbook_dir }}/params/project-requests-dev"
+       tags:
+       - projects
+     - name: "{{ test_namespace }}"
+       template: "{{ playbook_dir }}/templates/project-requests.yml"
+       action: create
+       params: "{{ playbook_dir }}/params/project-requests-test"
+       tags:
+       - projects
 ```
-![project-request-yaml](../images/exercise1/project-request-yml.png)
 
 3. With the configuration in place; install the OpenShift Applier dependency
 ```bash
@@ -228,8 +227,7 @@ ansible-playbook apply.yml -e target=tools \
 
 If you are running this enablement on your own, you will want to look in the appendix for info on setting up your own [GitLab instance](appendix/README.md).
 
-4. Navigate to GitLab (if you are in an instructor-led enablement, you will be provided the URL). You can login using your cluster credentials using the LDAP tab
-![gitlab-ui](../images/exercise1/gitlab-ui.png)
+4. Navigate to GitLab (if you are in an instructor-led enablement, you will be provided further instructions).
 
 4. Once logged in create a new project called `enablement-ci-cd` and mark it as internal. Once created; copy out the `git url` for use on the next step.
 ![gitlab-new-project](../images/exercise1/gitlab-new-project.png)
