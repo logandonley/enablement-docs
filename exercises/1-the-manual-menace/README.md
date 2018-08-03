@@ -42,7 +42,7 @@ _____
 
 If you're feeling confident and don't want to follow the step-by-step guide these high-level instructions should provide a challenge for you:
 
-1. Clone the repo `https://github.com/rht-labs/enablement-ci-cd` which contains the scaffold of the project. Ensure you get all remote branches.
+1. Clone the repo `https://github.com/logandonley/enablement-ci-cd` which contains the scaffold of the project. Ensure you get all remote branches.
 
 2. Create `<your-name>-ci-cd`, `<your-name>-dev` and `<your-name>-test` project namespaces using the inventory and run them with the OpenShift Applier to populate the cluster
 
@@ -73,7 +73,7 @@ NOTE - If you do not want to have this folder at the root of your home dir that'
 
 3. Clone the scaffold project to your local machine's `innovation-labs` folder and pull all remote branches for use in later exercises. Note - this may error saying `fatal: A branch named 'develop' already exists.` but it can be ignored
 ```bash
-git clone https://github.com/rht-labs/enablement-ci-cd && cd enablement-ci-cd
+git clone https://github.com/logandonley/enablement-ci-cd && cd enablement-ci-cd
 ```
 ```bash
 ./git-pull-all.sh
@@ -226,7 +226,7 @@ ansible-playbook apply.yml -e target=tools \
 
 ### Part 3 - GitLab
 
-If you are running this enablement on your own, you will want to look in the appendix for info on setting up your own [GitLab instance](../appendix/README.md).
+If you are running this enablement on your own, you will want to look in the appendix for info on setting up your own [GitLab instance](appendix/README.md).
 
 4. Navigate to GitLab (if you are in an instructor-led enablement, you will be provided the URL). You can login using your cluster credentials using the LDAP tab
 ![gitlab-ui](../images/exercise1/gitlab-ui.png)
