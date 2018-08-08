@@ -479,6 +479,16 @@ oc login <OpenShift console url>
 ```bash
 ansible-playbook apply.yml -i inventory/ -e target=bootstrap
 ```
+```
+```bash
+oc project <YOUR_NAME>-ci-cd
+```
+```bash
+oc tag openshift/jenkins-slave-npm:latest jenkins-slave-npm:latest
+```
+```bash
+oc label is jenkins-slave-npm role=jenkins-slave
+```
 ```bash
 ansible-playbook apply.yml -i inventory/ -e target=tools -e '{"git_credentials": { "GIT_USERNAME": "<YOUR_GIT_USERNAME>", "GIT_PASSWORD": "<YOUR_GIT_PASSWORD>"}}'
 ```
