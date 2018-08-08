@@ -475,6 +475,8 @@ npm install
 npm run build:ci:dev
 npm run package
 npm run publish
+git config --global user.name "Tyler Auerbeck"
+git config --global user.email "tauerbec@redhat.com"
 ```
 ![build-step](../images/exercise2/build-step.png)
 
