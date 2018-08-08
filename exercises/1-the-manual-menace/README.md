@@ -480,7 +480,7 @@ oc login <OpenShift console url>
 ansible-playbook apply.yml -i inventory/ -e target=bootstrap
 ```
 ```bash
-ansible-playbook apply.yml -i inventory/ -e target=tools
+ansible-playbook apply.yml -i inventory/ -e target=tools -e '{"git_credentials": { "GIT_USERNAME": "<YOUR_GIT_USERNAME>", "GIT_PASSWORD": "<YOUR_GIT_PASSWORD>"}}'
 ```
 
 _____
